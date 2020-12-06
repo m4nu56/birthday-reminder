@@ -1,0 +1,84 @@
+import nu.studer.gradle.jooq.JooqEdition
+
+plugins {
+	id 'org.springframework.boot' version '2.4.0'
+	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+	id 'nu.studer.jooq' version '5.2'
+	id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '15'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-jooq'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'com.h2database:h2'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	jooqGenerator 'com.h2database:h2:1.4.200'
+}
+
+test {
+	useJUnitPlatform()
+}
+
+jooq {
+	// use jOOQ version defined in Spring Boot
+	version = dependencyManagement.importedProperties['jooq.version']
+	edition = JooqEdition.OSS
+
+	configurations {
+		main {
+			generationTool {
+				logging = org.jooq.meta.jaxb.Logging.WARN
+				jdbc {
+					driver = 'org.h2.Driver'
+					url = 'jdbc:h2:file:./data/birthday;AUTO_SERVER=TRUE'
+					user = 'sa'
+					password = 'password'
+					properties {
+						property {
+							key = 'PAGE_SIZE'
+							value = 2048
+						}
+					}
+				}
+				generator {
+					name = 'org.jooq.codegen.DefaultGenerator'
+					database {
+						name = 'org.jooq.meta.h2.H2Database'
+						inputSchema = 'PUBLIC'
+						includes = '.*'
+						excludes = ''
+					}
+					generate {
+						deprecated = false
+						records = true
+						immutablePojos = false
+						fluentSetters = true
+						daos = true
+					}
+					target {
+						packageName = 'dev.m4nu56.model'
+					}
+					strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
+				}
+			}
+		}
+	}
+}
