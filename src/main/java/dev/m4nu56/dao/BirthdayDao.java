@@ -29,7 +29,7 @@ public class BirthdayDao {
     private final DSLContext jooq;
 
     public BirthdayDao(@Qualifier("dsl") DSLContext jooq, DefaultConfiguration configuration) {
-        reminderDao = new ReminderDao(configuration);
+        this.reminderDao = new ReminderDao(configuration);
         this.jooq = jooq;
     }
 
