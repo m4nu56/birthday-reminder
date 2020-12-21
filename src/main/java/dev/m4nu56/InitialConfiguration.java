@@ -20,8 +20,9 @@ import javax.sql.DataSource;
 @Configuration
 public class InitialConfiguration {
 
-    @Autowired
-    private DataSource dataSource;
+    private final DataSource dataSource;
+
+    public InitialConfiguration(DataSource dataSource) {this.dataSource = dataSource;}
 
     @Bean
     public DataSourceConnectionProvider connectionProvider() {
