@@ -7,7 +7,7 @@ plugins {
 	id 'java'
 }
 
-group = 'com.example'
+group = 'dev.m4nu56'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '15'
 
