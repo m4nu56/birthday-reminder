@@ -1,5 +1,6 @@
 package dev.m4nu56.dao;
 
+import dev.m4nu56.model.Tables;
 import dev.m4nu56.model.tables.daos.ReminderDao;
 import dev.m4nu56.model.tables.pojos.Reminder;
 import dev.m4nu56.model.tables.records.ReminderRecord;
@@ -17,7 +18,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static dev.m4nu56.model.Tables.REMINDER;
 
 @Repository
 @Slf4j
@@ -35,7 +35,7 @@ public class BirthdayDao {
 
     @Transactional
     public Reminder insertAndFetch(Reminder reminder) {
-        ReminderRecord reminderRecord = jooq.insertInto(REMINDER)
+        ReminderRecord reminderRecord = jooq.insertInto(Tables.REMINDER)
                 .set(createRecord(reminder))
                 .returning()
                 .fetchOne();
@@ -51,11 +51,11 @@ public class BirthdayDao {
     }
 
     public List<LocalDate> getBirthdayReminders() {
-        Result<Record> result = jooq.select().from(REMINDER).fetch();
+        Result<Record> result = jooq.select().from(Tables.REMINDER).fetch();
         for (Record r : result) {
-            Long id = r.getValue(REMINDER.ID);
-            LocalDate birthdayDate = r.getValue(REMINDER.BIRTHDAY_DATE);
-            String email = r.getValue(REMINDER.EMAIL);
+            Long id = r.getValue(Tables.REMINDER.ID);
+            LocalDate birthdayDate = r.getValue(Tables.REMINDER.BIRTHDAY_DATE);
+            String email = r.getValue(Tables.REMINDER.EMAIL);
 
             log.info("ID: " + id + " birtdayDate: " + birthdayDate + " email: " + email);
         }
@@ -63,9 +63,9 @@ public class BirthdayDao {
     }
 
     public void insertRecord(LocalDate date, String email) {
-        jooq.insertInto(REMINDER)
-                .set(REMINDER.BIRTHDAY_DATE, date)
-                .set(REMINDER.EMAIL, email)
+        jooq.insertInto(Tables.REMINDER)
+                .set(Tables.REMINDER.BIRTHDAY_DATE, date)
+                .set(Tables.REMINDER.EMAIL, email)
                 .execute();
     }
 
