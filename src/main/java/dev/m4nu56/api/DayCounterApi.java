@@ -2,13 +2,13 @@ package dev.m4nu56.api;
 
 import dev.m4nu56.business.DayCounter;
 import dev.m4nu56.dao.BirthdayDao;
-import dev.m4nu56.model.tables.daos.ReminderDao;
 import dev.m4nu56.model.tables.pojos.Reminder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,4 +48,12 @@ public class DayCounterApi {
         logger.info(String.valueOf(counter.incrementAndGet()));
         return birthdayDao.getReminderDao().findAll();
     }
+
+    @PostMapping(path= "/reminders", consumes = "application/json", produces="application/json")
+    public Reminder createReminder(@RequestBody Reminder reminder) {
+        logger.info(reminder.toString());
+        birthdayDao.getReminderDao().insert(reminder);
+        return birthdayDao.getReminderDao().findById(reminder.getId());
+    }
+
 }
