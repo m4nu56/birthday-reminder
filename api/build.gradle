@@ -33,6 +33,17 @@ dependencies {
 	jooqGenerator 'com.h2database:h2:1.4.200'
 }
 
+task copyWebApp(type: Copy) {
+	from '../front/build'
+	into 'build/resources/main/static/.'
+}
+
+project(':api').tasks.bootRun.dependsOn(copyWebApp)
+project(':api').tasks.bootJar.dependsOn(copyWebApp)
+project(':api').tasks.compileJava.dependsOn(':front:npmInstall')
+project(':api').tasks.compileJava.dependsOn(':front:appNpmBuild')
+
+
 test {
 	useJUnitPlatform()
 }

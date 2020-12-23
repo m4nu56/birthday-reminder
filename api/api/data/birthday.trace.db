@@ -1,0 +1,4 @@
+2020-12-23 11:32:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "REMINDER" non trouvée
+Table "REMINDER" not found; SQL statement:
+select "PUBLIC"."REMINDER"."ID", "PUBLIC"."REMINDER"."BIRTHDAY_DATE", "PUBLIC"."REMINDER"."EMAIL" from "PUBLIC"."REMINDER" [42102-200]
