@@ -4,6 +4,8 @@ allprojects {
     }
 }
 
+task stage(dependsOn: [':api:build'])
+
 buildscript {
     repositories {
         maven {
